@@ -1,4 +1,4 @@
-App.RollProperty = function($scope){
+App.RollProperty = function($scope, $firebaseObject){
 
 $scope.initialize = function (prgcount, totalChordCount) {
 	//progress bar count and name of progress display
@@ -20,20 +20,44 @@ $scope.initialize = function (prgcount, totalChordCount) {
     $scope.dGroup.transition().selectAll("text").delay($scope.delay*1.5).style("font-size","10px");
 }
 
-	
-var prgrCount=100, totalFetchCount=10, totalPplCount=10, initPrgrCount=0;
-var dataJsonObj="resources/d4/data/ustrade_2000-2015.csv";
-var htmlcont=  99999999999999+" Joined.";
-document.getElementsByClassName("secondLabel")[0].innerHTML=htmlcont
-$scope.initialize(prgrCount, totalPplCount);
-$scope.fetchData(dataJsonObj, totalFetchCount);
 
-$scope.run = function () {			
-	 if(initPrgrCount++ < totalPplCount) {
-		 $scope.update(0,initPrgrCount);
+var starCountRef = firebase.database().ref('RollProperty/1');
+starCountRef.on('value', function(snapshot) {
+	updateRollProperty(snapshot);
+});
+
+function updateRollProperty(snapshot) {	
+	//alert(' - '+ JSON.stringify(snapshot.val()));
+	$scope.fireName ='anonymous';
+	$scope.firePrgrCount= 100;
+	$scope.fireTotalFetchCount=100; 
+	$scope.fireTotalPplCount=100; 
+	$scope.fireInitPrgrCount=0;
+	$scope.fireDataJsonObj="resources/d4/data/ustrade_2000-2014.csv";
+	$scope.fireHtmlcont="99999999999999 Joined.";	
+	$scope.run();	
+}
+//Default
+$scope.fireName ='anonymous';
+$scope.firePrgrCount= 100;
+$scope.fireTotalFetchCount=10; 
+$scope.fireTotalPplCount=10; 
+$scope.fireInitPrgrCount=0;
+$scope.fireDataJsonObj="resources/d4/data/ustrade_2000-2015.csv";
+$scope.fireHtmlcont="0 Joined.";
+
+
+$scope.initialize($scope.firePrgrCount, $scope.fireTotalPplCount);
+$scope.fetchData($scope.fireDataJsonObj, $scope.fireTotalFetchCount);
+document.getElementsByClassName("secondLabel")[0].innerHTML=$scope.fireHtmlcont;
+
+$scope.run = function () {
+	 if($scope.fireInitPrgrCount++ < $scope.fireTotalPplCount) {
+		 $scope.update(0,$scope.fireInitPrgrCount);
 	 } else {
-		initPrgrCount=0;
-		$scope.fetchData(dataJsonObj, totalFetchCount);
+		 $scope.fireInitPrgrCount=0;
+		 document.getElementsByClassName("secondLabel")[0].innerHTML=$scope.fireHtmlcont;
+		$scope.fetchData($scope.fireDataJsonObj, $scope.fireTotalFetchCount);
 	 }
 }
 }

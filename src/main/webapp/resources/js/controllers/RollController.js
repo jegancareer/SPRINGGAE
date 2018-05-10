@@ -1,4 +1,4 @@
-var RollController = function($scope, $http) {
+var RollController = function($scope, $http, $firebaseObject) {
     $scope.fetchRoll = function() {
         $http.get('roll/roll.json').success(function(rolling){
             $scope.roll = rolling;
@@ -9,7 +9,7 @@ var RollController = function($scope, $http) {
     App.RollGradiants($scope);
     App.RollData($scope);
     App.RollChords($scope);
-    App.RollProperty($scope);
+    App.RollProperty($scope, $firebaseObject);
     App.RollUpdate($scope);
     
 };

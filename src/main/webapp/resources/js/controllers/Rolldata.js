@@ -2,7 +2,7 @@ App.RollData = function($scope)
 {
 	$scope.fetchData= function(dataJsonObj, fetchMax) {
 
-    d3.csv(dataJsonObj, function(csv) {
+    d3.csv($scope.fireDataJsonObj, function(csv) {
 
         var normalized=[];
 		if (fetchMax>csv.length) {
@@ -41,8 +41,8 @@ App.RollData = function($scope)
             }
         }
 	//Start refreshing Chart
-    $scope.run();
-    refreshIntervalId = setInterval($scope.run, $scope.delay);		
+      $scope.run();
+    refreshIntervalId = setInterval($scope.run, $scope.delay);
     });
 	}
 }
